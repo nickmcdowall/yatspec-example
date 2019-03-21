@@ -1,3 +1,5 @@
+package com.googlecode.nickmcdowall;
+
 import com.googlecode.yatspec.junit.SequenceDiagramExtension;
 import com.googlecode.yatspec.junit.SpecListener;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
