@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith({SpecListener.class, SequenceDiagramExtension.class})
-public class SequenceDiagramExampleTest implements WithTestState {
+public class SequenceExampleTest implements WithTestState {
 
     private static final String NEW_USER_REQUEST = "{ \"name\" : \"nick\" }";
     private static final String EXPECTED_ENRICHED_MESSAGE = "<some-xml/>";
@@ -30,8 +30,7 @@ public class SequenceDiagramExampleTest implements WithTestState {
     private void givenThatUpstreamHasPublishedA(String message) {
         interactions.log("message from Upstream to InboundTopic", message);
 
-        interactions.interestingGivens
-                .add("lookupId", LOOKUP_ID);
+        interactions.log("lookupId", LOOKUP_ID);
     }
 
     private void whenTheAppConsumesTheMessageContainingThe(String message) {
@@ -51,4 +50,6 @@ public class SequenceDiagramExampleTest implements WithTestState {
     public TestState testState() {
         return interactions;
     }
+
+
 }
