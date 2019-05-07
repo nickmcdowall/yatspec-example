@@ -1,5 +1,7 @@
 # Yatspec Example
 
+[![Build Status](https://travis-ci.com/nickmcdowall/yatspec-example.svg?branch=master)](https://travis-ci.com/nickmcdowall/yatspec-example)
+
 This is an example Gradle project that uses Yatspec ([nickmcdowall fork](https://github.com/nickmcdowall/yatspec))
 to generate the test reports (including sequence diagram).
 
