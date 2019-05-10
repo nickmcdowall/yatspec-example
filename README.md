@@ -7,7 +7,7 @@ See `SequenceDiagramExampleTest.java`for a JUnit 5 test skeleton example.
 
 Run the tests the usual way by building the project e.g.:
 
-###Prerequisites:
+### Prerequisites:
 * Java 11
 
 ### Run
