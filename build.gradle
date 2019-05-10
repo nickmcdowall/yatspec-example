@@ -25,7 +25,9 @@ test {
 
 dependencies {
 
-    testImplementation 'com.github.nickmcdowall:yatspec:release-2019.1.12'
+//    testImplementation 'com.github.nickmcdowall:yatspec:release-2019.1.12'
+//    testImplementation 'com.github.nickmcdowall:yatspec:a55372d75f'
+    testImplementation 'com.github.nickmcdowall:yatspec:46cb372799'
 
 
     testImplementation "org.junit.jupiter:junit-jupiter-api:$junitJupiter"
