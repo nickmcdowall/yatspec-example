@@ -1,8 +1,10 @@
 package com.googlecode.nickmcdowall.config;
 
-import com.googlecode.nickmcdowall.client.LookupClient;
 import com.googlecode.nickmcdowall.AppService;
-import com.googlecode.nickmcdowall.client.RestClient;
+import com.googlecode.nickmcdowall.client.ColourResponse;
+import com.googlecode.nickmcdowall.client.GenericClient;
+import com.googlecode.nickmcdowall.client.LookupClient;
+import com.googlecode.nickmcdowall.client.SizeResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,16 +14,16 @@ import org.springframework.web.client.RestTemplate;
 public class AppConfig {
 
     @Value("${lookup.colour.host}")
-    private String colourLookupHost;
+    private String colourHost;
 
     @Value("${lookup.size.host}")
-    private String sizeLookupHost;
+    private String sizeHost;
 
     @Value("${lookup.colour.pathTemplate}")
-    private String colourLookupPathTemplate;
+    private String colourPathTemplate;
 
     @Value("${lookup.size.pathTemplate}")
-    private String sizeLookupPathTemplate;
+    private String sizePathTemplate;
 
     @Bean
     public RestTemplate sizeRestTemplate() {
@@ -35,12 +37,12 @@ public class AppConfig {
 
     @Bean
     public LookupClient colourLookupClient() {
-        return new RestClient(colourRestTemplate(), colourLookupHost, colourLookupPathTemplate);
+        return new GenericClient(colourRestTemplate(), colourHost + colourPathTemplate, ColourResponse.class);
     }
 
     @Bean
     public LookupClient sizeLookupClient() {
-        return new RestClient(sizeRestTemplate(), sizeLookupHost, sizeLookupPathTemplate);
+        return new GenericClient(sizeRestTemplate(), sizeHost + sizePathTemplate, SizeResponse.class);
     }
 
     @Bean

@@ -4,7 +4,7 @@ import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-public class InteractionInterceptor implements Answer {
+public class InteractionInterceptor<T> implements Answer<T> {
 
     private final TestState interactions;
     private final String sourceName;
@@ -19,10 +19,10 @@ public class InteractionInterceptor implements Answer {
     }
 
     @Override
-    public Object answer(InvocationOnMock invocation) throws Throwable {
+    public T answer(InvocationOnMock invocation) throws Throwable {
         Object capturedArgument = invocation.getArguments()[argumentIndex];
         interactions.log("call from " + sourceName + " to " + targetName, capturedArgument);
-        Object realResponse = invocation.callRealMethod();
+        T realResponse = (T) invocation.callRealMethod();
         interactions.log("response from " + targetName + " to " + sourceName, realResponse);
         return realResponse;
     }

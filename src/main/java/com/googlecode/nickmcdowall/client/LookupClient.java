@@ -1,5 +1,5 @@
 package com.googlecode.nickmcdowall.client;
 
-public interface LookupClient {
-    String lookup(String id);
+public interface LookupClient<T> {
+    T lookup(String id);
 }

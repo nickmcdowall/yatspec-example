@@ -17,7 +17,7 @@ public class AppController {
     }
 
     @GetMapping(value = "/{id}", produces = "application/json")
-    public String productDetails(@PathVariable String id) {
-        return appService.getDetailsFor(id);
+    public ProductResponse productDetails(@PathVariable String id) {
+        return appService.getProductDetailsFor(id);
     }
 }

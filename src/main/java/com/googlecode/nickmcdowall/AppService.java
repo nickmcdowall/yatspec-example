@@ -1,24 +1,23 @@
 package com.googlecode.nickmcdowall;
 
+import com.googlecode.nickmcdowall.client.ColourResponse;
 import com.googlecode.nickmcdowall.client.LookupClient;
+import com.googlecode.nickmcdowall.client.SizeResponse;
 
 public class AppService {
 
-    private final LookupClient lookupClient;
-    private final LookupClient sizeLookupClient;
+    private final LookupClient<ColourResponse> colourClient;
+    private final LookupClient<SizeResponse> sizeClient;
 
-    public AppService(LookupClient lookupClient, LookupClient sizeLookupClient) {
-        this.lookupClient = lookupClient;
-        this.sizeLookupClient = sizeLookupClient;
+    public AppService(LookupClient<ColourResponse> colourClient, LookupClient<SizeResponse> sizeClient) {
+        this.colourClient = colourClient;
+        this.sizeClient = sizeClient;
     }
 
-    public String getDetailsFor(String id) {
-        String colour = lookupClient.lookup(id);
-        String size = sizeLookupClient.lookup(id);
-
-        return "{" +
-                "\"colour\": " + colour +
-                ", \"size\": " + size +
-                "}";
+    public ProductResponse getProductDetailsFor(String id) {
+        return ImmutableProductResponse.builder()
+                .colour(colourClient.lookup(id).colour())
+                .size(sizeClient.lookup(id).size()).id(id)
+                .build();
     }
 }

@@ -35,6 +35,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ExtendWith({SpecListener.class, SequenceDiagramExtension.class})
 public class SpringBootSequenceExampleTest implements WithTestState, WithParticipants {
 
+    @LocalServerPort
+    private int port;
+
     @Autowired
     private TestRestTemplate restTemplate;
 
@@ -44,14 +47,11 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
     @SpyBean(name = "colourRestTemplate")
     private RestTemplate colourRestTemplate;
 
-    @LocalServerPort
-    private int port;
-
     private TestState interactions = new TestState();
     private HttpStubber httpStubber = new HttpStubber(8090);
     private InteractionInterceptor sizeClientInterceptor = new InteractionInterceptor(interactions, "App", "sizing", 0);
     private InteractionInterceptor colourClientInterceptor = new InteractionInterceptor(interactions, "App", "colouring", 0);
-    private String serviceResponse;
+    private ImmutableProductResponse serviceResponse;
 
     @BeforeEach
     public void setup() {
@@ -77,15 +77,19 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
     }
 
     private void thenTheResponseContainsTheExpectedValues() {
-        assertThat(serviceResponse)
-                .contains("\"colour\": \"red\"")
-                .contains("\"size\": \"large\"");
+        assertThat(serviceResponse).isEqualTo(
+                ImmutableProductResponse.builder()
+                        .id("5")
+                        .size("large")
+                        .colour("red")
+                        .build()
+        );
     }
 
     private void whenTheUserRequestsProductWithId(final String id) {
         String path = "/product/details/" + id;
         interactions.log("request product with id " + id + " from user to App", path);
-        serviceResponse = restTemplate.getForObject("http://localhost:" + port + path, String.class);
+        serviceResponse = restTemplate.getForObject("http://localhost:" + port + path, ImmutableProductResponse.class);
         interactions.log("response from App to user", serviceResponse);
     }
 
