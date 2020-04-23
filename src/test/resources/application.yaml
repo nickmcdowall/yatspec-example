@@ -1,10 +1,7 @@
 lookup:
   colour:
-    host: http://localhost:8090
-    pathTemplate: /colour/%s
+    endpoint: http://localhost:8090/colour/%s
   size:
-    host: http://localhost:8090
-    pathTemplate: /size/%s
+    endpoint: http://localhost:8090/size/%s
   description:
-    host: http://localhost:8090
-    pathTemplate: /description/%s
+    endpoint: http://localhost:8090/description/%s

@@ -2,7 +2,7 @@ package com.googlecode.nickmcdowall;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.googlecode.nickmcdowall.answer.InteractionInterceptor;
+import com.googlecode.nickmcdowall.answer.RestInterceptor;
 import com.googlecode.nickmcdowall.client.colour.ColourResponse;
 import com.googlecode.nickmcdowall.client.description.DescriptionResponse;
 import com.googlecode.nickmcdowall.client.size.SizeResponse;
@@ -61,18 +61,19 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
     @Autowired
     private ObjectMapper objectMapper;
 
+    @Autowired
+    private HttpServiceStubber httpServiceStubber;
+
     private final TestState interactions = new TestState();
-    private final HttpServiceStubber httpServiceStubber = new HttpServiceStubber(8090);
-    private final InteractionInterceptor<SizeResponse> sizeInterceptor = new InteractionInterceptor<>(interactions, "App", "sizing", 0);
-    private final InteractionInterceptor<ColourResponse> colourInterceptor = new InteractionInterceptor<>(interactions, "App", "colouring", 0);
-    private final InteractionInterceptor<DescriptionResponse> descriptionInterceptor = new InteractionInterceptor<>(interactions, "App", "description", 0);
+    private final RestInterceptor<SizeResponse> sizeInterceptor = new RestInterceptor<>(interactions, "App", "sizing");
+    private final RestInterceptor<ColourResponse> colourInterceptor = new RestInterceptor<>(interactions, "App", "colouring");
+    private final RestInterceptor<DescriptionResponse> descriptionInterceptor = new RestInterceptor<>(interactions, "App", "description");
+    private final String applicationHost = "http://localhost:{port}";
 
     private ProductResponse productResponse;
-    private String applicationHost;
 
     @BeforeEach
     public void setup() {
-        applicationHost = "http://localhost:" + port;
         doAnswer(sizeInterceptor).when(sizeRestTemplate).getForObject(anyString(), any());
         doAnswer(colourInterceptor).when(colourRestTemplate).getForObject(anyString(), any());
         doAnswer(descriptionInterceptor).when(descriptionRestTemplate).getForObject(anyString(), any());
@@ -101,7 +102,7 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
 
     private void whenAnApiRequestIsReceivedFor(final String path) throws JsonProcessingException {
         captureInboundRequest(path);
-        productResponse = restTemplate.getForObject(applicationHost + path, ProductResponse.class);
+        productResponse = restTemplate.getForObject(applicationHost + path, ProductResponse.class, port);
         captureResponse(productResponse);
     }
 

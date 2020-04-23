@@ -8,36 +8,36 @@ import org.mockito.stubbing.Answer;
 
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 
-public class InteractionInterceptor<T> implements Answer<T> {
+public class RestInterceptor<T> implements Answer<T> {
 
-    private ObjectMapper mapper = new ObjectMapper().enable(INDENT_OUTPUT);
+    public static final int URL_INDEX = 0;
+
+    private final ObjectMapper mapper = new ObjectMapper().enable(INDENT_OUTPUT);
 
     private final TestState interactions;
     private final String sourceName;
     private final String targetName;
-    private final int urlArgumentIndex;
 
-    public InteractionInterceptor(TestState interactions, String sourceName, String targetName, int urlArgumentIndex) {
+    public RestInterceptor(TestState interactions, String sourceName, String targetName) {
         this.interactions = interactions;
         this.sourceName = sourceName;
         this.targetName = targetName;
-        this.urlArgumentIndex = urlArgumentIndex;
     }
 
     @Override
     public T answer(InvocationOnMock invocation) throws Throwable {
-        String url = (String) invocation.getArguments()[urlArgumentIndex];
-        captureRequestArgument(url);
+        String url = invocation.getArgument(URL_INDEX);
+        captureRequest(url);
         T realResponse = (T) invocation.callRealMethod();
-        captureJsonResponse(realResponse);
+        captureJsonString(realResponse);
         return realResponse;
     }
 
-    private void captureRequestArgument(String url) {
+    private void captureRequest(String url) {
         interactions.log(url + " from " + sourceName + " to " + targetName, url);
     }
 
-    private void captureJsonResponse(T realResponse) {
+    private void captureJsonString(T realResponse) {
         interactions.log("response from " + targetName + " to " + sourceName, convertToJson(realResponse));
     }
 

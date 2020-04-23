@@ -17,23 +17,14 @@ import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 @Configuration
 public class AppConfig {
 
-    @Value("${lookup.colour.host}")
-    private String colourHost;
+    @Value("${lookup.colour.endpoint}")
+    private String colourEndpoint;
 
-    @Value("${lookup.size.host}")
-    private String sizeHost;
+    @Value("${lookup.size.endpoint}")
+    private String sizeEndpoint;
 
-    @Value("${lookup.description.host}")
-    private String descriptionHost;
-
-    @Value("${lookup.colour.pathTemplate}")
-    private String colourPathTemplate;
-
-    @Value("${lookup.size.pathTemplate}")
-    private String sizePathTemplate;
-
-    @Value("${lookup.description.pathTemplate}")
-    private String descriptionPathTemplate;
+    @Value("${lookup.description.endpoint}")
+    private String descriptionEndpoint;
 
     @Bean
     public ObjectMapper objectMapper() {
@@ -65,14 +56,14 @@ public class AppConfig {
     }
 
     public LookupClient<ColourResponse> colourLookupClient() {
-        return new GenericLookupClient<>(colourRestTemplate(), colourHost + colourPathTemplate, ColourResponse.class);
+        return new GenericLookupClient<>(colourRestTemplate(), colourEndpoint, ColourResponse.class);
     }
 
     public LookupClient<SizeResponse> sizeLookupClient() {
-        return new GenericLookupClient<>(sizeRestTemplate(), sizeHost + sizePathTemplate, SizeResponse.class);
+        return new GenericLookupClient<>(sizeRestTemplate(), sizeEndpoint, SizeResponse.class);
     }
 
     public LookupClient<DescriptionResponse> descriptionLookupClient() {
-        return new GenericLookupClient<>(descriptionRestTemplate(), descriptionHost + descriptionPathTemplate, DescriptionResponse.class);
+        return new GenericLookupClient<>(descriptionRestTemplate(), descriptionEndpoint, DescriptionResponse.class);
     }
 }
