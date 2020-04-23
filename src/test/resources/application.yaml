@@ -1,7 +1,8 @@
+wiremock.server.port: 8090
 lookup:
   colour:
-    endpoint: http://localhost:8090/colour/%s
+    endpoint: http://localhost:${wiremock.server.port}/colour/%s
   size:
-    endpoint: http://localhost:8090/size/%s
+    endpoint: http://localhost:${wiremock.server.port}/size/%s
   description:
-    endpoint: http://localhost:8090/description/%s
+    endpoint: http://localhost:${wiremock.server.port}/description/%s

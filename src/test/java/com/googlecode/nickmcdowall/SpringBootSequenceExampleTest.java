@@ -31,7 +31,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 import static com.googlecode.nickmcdowall.product.ImmutableProductResponse.aProductResponseWith;
-import static com.googlecode.yatspec.sequence.Participants.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -46,8 +45,7 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
     @LocalServerPort
     private int port;
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+    private final String applicationHost = "http://localhost:{port}";
 
     @SpyBean(name = "sizeRestTemplate")
     private RestTemplate sizeRestTemplate;
@@ -64,11 +62,23 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
     @Autowired
     private HttpServiceStubber httpServiceStubber;
 
-    private final TestState interactions = new TestState();
-    private final RestInterceptor<SizeResponse> sizeInterceptor = new RestInterceptor<>(interactions, "App", "sizing");
-    private final RestInterceptor<ColourResponse> colourInterceptor = new RestInterceptor<>(interactions, "App", "colouring");
-    private final RestInterceptor<DescriptionResponse> descriptionInterceptor = new RestInterceptor<>(interactions, "App", "description");
-    private final String applicationHost = "http://localhost:{port}";
+    @Autowired
+    private TestState interactions;
+
+    @Autowired
+    private List<Participant> participants;
+
+    @Autowired
+    private RestInterceptor<SizeResponse> sizeInterceptor;
+
+    @Autowired
+    private RestInterceptor<ColourResponse> colourInterceptor;
+
+    @Autowired
+    private RestInterceptor<DescriptionResponse> descriptionInterceptor;
+
+    @Autowired
+    private TestRestTemplate restTemplate;
 
     private ProductResponse productResponse;
 
@@ -117,13 +127,7 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
 
     @Override
     public List<Participant> participants() {
-        return List.of(
-                ACTOR.create("user", "Customer"),
-                PARTICIPANT.create("App", "Product Lookup"),
-                COLLECTIONS.create("colouring", "colour service"),
-                COLLECTIONS.create("sizing", "sizing service"),
-                COLLECTIONS.create("description", "description service")
-        );
+        return participants;
     }
 
     private void captureResponse(ProductResponse serviceResponse) throws JsonProcessingException {
