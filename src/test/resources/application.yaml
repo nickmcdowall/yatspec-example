@@ -5,3 +5,6 @@ lookup:
   size:
     host: http://localhost:8090
     pathTemplate: /size/%s
+  description:
+    host: http://localhost:8090
+    pathTemplate: /description/%s

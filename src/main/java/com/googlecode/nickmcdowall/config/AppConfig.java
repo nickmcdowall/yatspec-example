@@ -1,14 +1,18 @@
 package com.googlecode.nickmcdowall.config;
 
-import com.googlecode.nickmcdowall.AppService;
-import com.googlecode.nickmcdowall.client.ColourResponse;
-import com.googlecode.nickmcdowall.client.GenericClient;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.googlecode.nickmcdowall.client.GenericLookupClient;
 import com.googlecode.nickmcdowall.client.LookupClient;
-import com.googlecode.nickmcdowall.client.SizeResponse;
+import com.googlecode.nickmcdowall.client.colour.ColourResponse;
+import com.googlecode.nickmcdowall.client.description.DescriptionResponse;
+import com.googlecode.nickmcdowall.client.size.SizeResponse;
+import com.googlecode.nickmcdowall.product.ProductService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
+
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 
 @Configuration
 public class AppConfig {
@@ -19,14 +23,30 @@ public class AppConfig {
     @Value("${lookup.size.host}")
     private String sizeHost;
 
+    @Value("${lookup.description.host}")
+    private String descriptionHost;
+
     @Value("${lookup.colour.pathTemplate}")
     private String colourPathTemplate;
 
     @Value("${lookup.size.pathTemplate}")
     private String sizePathTemplate;
 
+    @Value("${lookup.description.pathTemplate}")
+    private String descriptionPathTemplate;
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper().enable(INDENT_OUTPUT);
+    }
+
     @Bean
     public RestTemplate sizeRestTemplate() {
+        return new RestTemplate();
+    }
+
+    @Bean
+    public RestTemplate descriptionRestTemplate() {
         return new RestTemplate();
     }
 
@@ -36,17 +56,23 @@ public class AppConfig {
     }
 
     @Bean
-    public LookupClient colourLookupClient() {
-        return new GenericClient(colourRestTemplate(), colourHost + colourPathTemplate, ColourResponse.class);
+    public ProductService productDetailsService() {
+        return new ProductService(
+                colourLookupClient(),
+                sizeLookupClient(),
+                descriptionLookupClient()
+        );
     }
 
-    @Bean
-    public LookupClient sizeLookupClient() {
-        return new GenericClient(sizeRestTemplate(), sizeHost + sizePathTemplate, SizeResponse.class);
+    public LookupClient<ColourResponse> colourLookupClient() {
+        return new GenericLookupClient<>(colourRestTemplate(), colourHost + colourPathTemplate, ColourResponse.class);
     }
 
-    @Bean
-    public AppService productDetailsService() {
-        return new AppService(colourLookupClient(), sizeLookupClient());
+    public LookupClient<SizeResponse> sizeLookupClient() {
+        return new GenericLookupClient<>(sizeRestTemplate(), sizeHost + sizePathTemplate, SizeResponse.class);
+    }
+
+    public LookupClient<DescriptionResponse> descriptionLookupClient() {
+        return new GenericLookupClient<>(descriptionRestTemplate(), descriptionHost + descriptionPathTemplate, DescriptionResponse.class);
     }
 }

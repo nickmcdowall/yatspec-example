@@ -4,11 +4,11 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 
-public class HttpStubber {
+public class HttpServiceStubber {
 
     private WireMockServer wireMockServer;
 
-    public HttpStubber(int port) {
+    public HttpServiceStubber(int port) {
         wireMockServer = new WireMockServer(port);
         wireMockServer.start();
     }

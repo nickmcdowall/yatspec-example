@@ -1,0 +1,7 @@
+lookup:
+  colour:
+    host: todo
+    pathTemplate: /colour/%s
+  size:
+    host: todo
+    pathTemplate: /size/%s

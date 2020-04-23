@@ -1,4 +1,4 @@
-package com.googlecode.nickmcdowall;
+package com.googlecode.nickmcdowall.product;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,17 +7,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("product/details")
-public class AppController {
+@RequestMapping("product")
+public class ProductController {
 
-    private final AppService appService;
+    private final ProductService productService;
 
-    public AppController(@Autowired AppService appService) {
-        this.appService = appService;
+    public ProductController(@Autowired ProductService productService) {
+        this.productService = productService;
     }
 
-    @GetMapping(value = "/{id}", produces = "application/json")
+    @GetMapping(value = "/details/{id}", produces = "application/json")
     public ProductResponse productDetails(@PathVariable String id) {
-        return appService.getProductDetailsFor(id);
+        return productService.getProductDetailsFor(id);
     }
 }

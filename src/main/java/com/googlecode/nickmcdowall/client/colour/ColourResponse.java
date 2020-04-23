@@ -1,4 +1,4 @@
-package com.googlecode.nickmcdowall.client;
+package com.googlecode.nickmcdowall.client.colour;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.immutables.value.Value;
