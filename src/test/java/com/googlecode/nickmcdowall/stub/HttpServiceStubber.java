@@ -13,10 +13,10 @@ public class HttpServiceStubber {
         wireMockServer.start();
     }
 
-    public void stub(String path, String file) {
+    public void stubGet(String path, String file, String contentType) {
         wireMockServer.stubFor(get(urlEqualTo(path))
                 .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Content-Type", contentType)
                         .withStatus(200)
                         .withBodyFile(file)));
     }

@@ -6,7 +6,5 @@ import org.immutables.value.Value;
 @Value.Immutable
 @JsonDeserialize(as = ImmutableSizeResponse.class)
 public interface SizeResponse {
-    String id();
-
     String size();
 }

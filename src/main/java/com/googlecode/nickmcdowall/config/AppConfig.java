@@ -32,17 +32,7 @@ public class AppConfig {
     }
 
     @Bean
-    public RestTemplate sizeRestTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean
-    public RestTemplate descriptionRestTemplate() {
-        return new RestTemplate();
-    }
-
-    @Bean
-    public RestTemplate colourRestTemplate() {
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 
@@ -56,14 +46,14 @@ public class AppConfig {
     }
 
     public LookupClient<ColourResponse> colourLookupClient() {
-        return new GenericLookupClient<>(colourRestTemplate(), colourEndpoint, ColourResponse.class);
+        return new GenericLookupClient<>(restTemplate(), colourEndpoint, ColourResponse.class);
     }
 
     public LookupClient<SizeResponse> sizeLookupClient() {
-        return new GenericLookupClient<>(sizeRestTemplate(), sizeEndpoint, SizeResponse.class);
+        return new GenericLookupClient<>(restTemplate(), sizeEndpoint, SizeResponse.class);
     }
 
     public LookupClient<DescriptionResponse> descriptionLookupClient() {
-        return new GenericLookupClient<>(descriptionRestTemplate(), descriptionEndpoint, DescriptionResponse.class);
+        return new GenericLookupClient<>(restTemplate(), descriptionEndpoint, DescriptionResponse.class);
     }
 }

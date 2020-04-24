@@ -21,8 +21,9 @@ public class ProductService {
 
     public ProductResponse getProductDetailsFor(String id) {
         return aProductResponseWith()
+                .id(id)
+                .size(sizeClient.lookup(id).size())
                 .colour(colourClient.lookup(id).colour())
-                .size(sizeClient.lookup(id).size()).id(id)
                 .description(descriptionResponse.lookup(id).description())
                 .build();
     }

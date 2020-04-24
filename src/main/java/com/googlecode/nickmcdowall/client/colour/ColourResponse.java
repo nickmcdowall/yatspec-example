@@ -6,7 +6,5 @@ import org.immutables.value.Value;
 @Value.Immutable
 @JsonDeserialize(as = ImmutableColourResponse.class)
 public interface ColourResponse {
-    String id();
-
     String colour();
 }

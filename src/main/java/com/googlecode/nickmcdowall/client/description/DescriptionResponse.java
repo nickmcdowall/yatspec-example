@@ -6,7 +6,5 @@ import org.immutables.value.Value;
 @Value.Immutable
 @JsonDeserialize(as = ImmutableDescriptionResponse.class)
 public interface DescriptionResponse {
-    String id();
-
     String description();
 }

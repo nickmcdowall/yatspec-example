@@ -34,7 +34,7 @@ public class SequenceWithParticipantsExampleTest implements WithTestState, WithP
     }
 
     private void givenThatAnActorSendsAMessageToTopic() {
-        interactions.log("send message from user to inbound", NEW_USER_REQUEST);
+        interactions.log("send message from User to inbound", NEW_USER_REQUEST);
     }
 
     private void whenTheAppConsumesTheMessageAndPersistsIt() {
@@ -59,7 +59,7 @@ public class SequenceWithParticipantsExampleTest implements WithTestState, WithP
     @Override
     public List<Participant> participants() {
         return List.of(
-                ACTOR.create("user", "Jon from accounting"),
+                ACTOR.create("User", "Jon from accounting"),
                 CONTROL.create("inbound"),
                 PARTICIPANT.create("App"),
                 DATABASE.create("repository"),

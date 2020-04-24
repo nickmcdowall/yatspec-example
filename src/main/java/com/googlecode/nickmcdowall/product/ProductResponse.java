@@ -11,9 +11,9 @@ import org.immutables.value.Value;
 public interface ProductResponse {
     String id();
 
-    String colour();
-
     String size();
+
+    String colour();
 
     String description();
 }
