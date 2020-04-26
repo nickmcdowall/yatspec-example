@@ -1,11 +1,12 @@
 package com.googlecode.nickmcdowall.config;
 
-import com.googlecode.nickmcdowall.interceptor.HttpInteractionInterceptor;
+import com.googlecode.nickmcdowall.interceptor.YatspecHttpInterceptor;
 import com.googlecode.nickmcdowall.stub.HttpServiceStubber;
 import com.googlecode.yatspec.sequence.Participant;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.BufferingClientHttpRequestFactory;
@@ -36,8 +37,8 @@ public class TestConfig {
         return List.of(
                 ACTOR.create("User", "Customer"),
                 PARTICIPANT.create("App", "ProductService"),
-                COLLECTIONS.create("ColourService"),
                 COLLECTIONS.create("SizeService"),
+                COLLECTIONS.create("ColourService"),
                 COLLECTIONS.create("DescriptionService")
         );
     }
@@ -45,15 +46,24 @@ public class TestConfig {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    TestRestTemplate testRestTemplate;
+
     @PostConstruct
     public void configureYatspecInterceptor() {
+        addInterceptor(restTemplate, "App", Map.of(
+                "/colour", "ColourService",
+                "/size", "SizeService",
+                "/description", "DescriptionService"));
+
+        addInterceptor(testRestTemplate.getRestTemplate(), "User", Map.of("/", "App"));
+    }
+
+    private void addInterceptor(RestTemplate restTemplate, String sourceName, Map<String, String> targetNameMapping) {
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         restTemplate.setInterceptors(List.of(
-                new HttpInteractionInterceptor(interactions(), "App", Map.of(
-                        "/colour", "ColourService",
-                        "/size", "SizeService",
-                        "/description", "DescriptionService")
-                )));
+                new YatspecHttpInterceptor(interactions(), sourceName, targetNameMapping)
+        ));
     }
 
 }

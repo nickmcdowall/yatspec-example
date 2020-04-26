@@ -1,7 +1,5 @@
 package com.googlecode.nickmcdowall;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.nickmcdowall.product.ImmutableProductResponse;
 import com.googlecode.nickmcdowall.product.ProductResponse;
 import com.googlecode.nickmcdowall.stub.HttpServiceStubber;
@@ -15,10 +13,10 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.ConfigFileApplicationContextInitializer;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
@@ -32,16 +30,11 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ExtendWith({SpecListener.class, SequenceDiagramExtension.class})
 public class SpringBootSequenceExampleTest implements WithTestState, WithParticipants {
 
-    @LocalServerPort
-    private int port;
-
-    private final String applicationHost = "http://localhost:{port}";
+    @Value("${app.host}")
+    private String appHost;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Autowired
     private HttpServiceStubber httpServiceStubber;
@@ -55,7 +48,7 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
     private ProductResponse productResponse;
 
     @Test
-    public void handleProductDetailsRequest() throws JsonProcessingException {
+    public void handleProductDetailsRequest() {
         givenALargeRedFrizbeeProductExistsWithId("5");
 
         whenAnApiRequestIsReceivedFor("/product/details/5");
@@ -68,22 +61,6 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
         httpServiceStubber.stop();
     }
 
-    private void givenALargeRedFrizbeeProductExistsWithId(String id) {
-        httpServiceStubber.stubGet("/colour/" + id, "responses/red.json", "application/json");
-        httpServiceStubber.stubGet("/size/" + id, "responses/large.json", "application/json");
-        httpServiceStubber.stubGet("/description/" + id, "responses/frizbee.json", "application/json");
-    }
-
-    private void whenAnApiRequestIsReceivedFor(final String path) throws JsonProcessingException {
-        captureInboundRequest(path);
-        productResponse = testRestTemplate.getForObject(applicationHost + path, ProductResponse.class, port);
-        captureResponse(productResponse);
-    }
-
-    private void thenApiReturns(ImmutableProductResponse.Builder expectedResponse) {
-        assertThat(productResponse).isEqualTo(expectedResponse.build());
-    }
-
     @Override
     public TestState testState() {
         return interactions;
@@ -94,11 +71,18 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
         return participants;
     }
 
-    private void captureResponse(ProductResponse serviceResponse) throws JsonProcessingException {
-        interactions.log("response from App to User", objectMapper.writeValueAsString(serviceResponse));
+    private void givenALargeRedFrizbeeProductExistsWithId(String id) {
+        httpServiceStubber.stubGet("/colour/" + id, "responses/red.json", "application/json");
+        httpServiceStubber.stubGet("/size/" + id, "responses/large.json", "application/json");
+        httpServiceStubber.stubGet("/description/" + id, "responses/frizbee.json", "application/json");
     }
 
-    private void captureInboundRequest(String path) {
-        interactions.log("GET " + path + " from User to App", path);
+    private void whenAnApiRequestIsReceivedFor(final String path) {
+        productResponse = testRestTemplate.getForObject(appHost + path, ProductResponse.class);
     }
+
+    private void thenApiReturns(ImmutableProductResponse.Builder expectedResponse) {
+        assertThat(productResponse).isEqualTo(expectedResponse.build());
+    }
+
 }

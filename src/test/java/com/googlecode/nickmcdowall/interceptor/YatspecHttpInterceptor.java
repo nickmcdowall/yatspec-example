@@ -12,13 +12,13 @@ import java.util.Map;
 import static java.nio.charset.Charset.defaultCharset;
 import static org.springframework.util.StreamUtils.copyToString;
 
-public class HttpInteractionInterceptor implements ClientHttpRequestInterceptor {
+public class YatspecHttpInterceptor implements ClientHttpRequestInterceptor {
 
     private final TestState interactions;
     private final String sourceName;
     private final Map<String, String> destinationMapping;
 
-    public HttpInteractionInterceptor(TestState interactions, String sourceName, Map<String, String> destinationMapping) {
+    public YatspecHttpInterceptor(TestState interactions, String sourceName, Map<String, String> destinationMapping) {
         this.interactions = interactions;
         this.destinationMapping = destinationMapping;
         this.sourceName = sourceName;
@@ -30,7 +30,7 @@ public class HttpInteractionInterceptor implements ClientHttpRequestInterceptor 
         String destinationName = determineDestinationName(path);
         interactions.log(request.getMethodValue() + " " + path + " from " + sourceName + " to " + destinationName, body);
         ClientHttpResponse response = execution.execute(request, body);
-        interactions.log("response from " + destinationName + " to " + sourceName, copyToString(response.getBody(), defaultCharset()));
+        interactions.log("response code " + response.getRawStatusCode() + " from " + destinationName + " to " + sourceName, copyToString(response.getBody(), defaultCharset()));
         return response;
     }
 
