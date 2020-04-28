@@ -49,7 +49,7 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
 
     @Test
     public void handleProductDetailsRequest() {
-        givenALargeRedFrizbeeProductExistsWithId("5");
+        givenALargeRedFrisbeeProductExistsWithId("5");
 
         whenAnApiRequestIsReceivedFor("/product/details/5");
 
@@ -71,10 +71,10 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
         return participants;
     }
 
-    private void givenALargeRedFrizbeeProductExistsWithId(String id) {
+    private void givenALargeRedFrisbeeProductExistsWithId(String id) {
         httpServiceStubber.stubGet("/colour/" + id, "responses/red.json", "application/json");
         httpServiceStubber.stubGet("/size/" + id, "responses/large.json", "application/json");
-        httpServiceStubber.stubGet("/description/" + id, "responses/frizbee.json", "application/json");
+        httpServiceStubber.stubGet("/description/" + id, "responses/frisbee.json", "application/json");
     }
 
     private void whenAnApiRequestIsReceivedFor(final String path) {
