@@ -30,8 +30,14 @@ public class YatspecHttpInterceptor implements ClientHttpRequestInterceptor {
         String destinationName = determineDestinationName(path);
         interactions.log(request.getMethodValue() + " " + path + " from " + sourceName + " to " + destinationName, body);
         ClientHttpResponse response = execution.execute(request, body);
-        interactions.log("response code " + response.getRawStatusCode() + " from " + destinationName + " to " + sourceName, copyToString(response.getBody(), defaultCharset()));
+        interactions.log(response.getStatusCode() + " response from " + destinationName + " to " + sourceName, copyBodyToString(response));
         return response;
+    }
+
+    private String copyBodyToString(ClientHttpResponse response) throws IOException {
+        if (response.getHeaders().getContentLength() == 0)
+            return "";
+        return copyToString(response.getBody(), defaultCharset());
     }
 
     private String determineDestinationName(String path) {
