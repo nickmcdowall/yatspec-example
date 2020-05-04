@@ -11,12 +11,12 @@ public class ProductService {
 
     private final LookupClient<ColourResponse> colourClient;
     private final LookupClient<SizeResponse> sizeClient;
-    private final LookupClient<DescriptionResponse> descriptionResponse;
+    private final LookupClient<DescriptionResponse> descriptionClient;
 
-    public ProductService(LookupClient<ColourResponse> colourClient, LookupClient<SizeResponse> sizeClient, LookupClient<DescriptionResponse> descriptionResponse) {
+    public ProductService(LookupClient<ColourResponse> colourClient, LookupClient<SizeResponse> sizeClient, LookupClient<DescriptionResponse> descriptionClient) {
         this.colourClient = colourClient;
         this.sizeClient = sizeClient;
-        this.descriptionResponse = descriptionResponse;
+        this.descriptionClient = descriptionClient;
     }
 
     public ProductResponse getProductDetailsFor(String id) {
@@ -24,7 +24,7 @@ public class ProductService {
                 .id(id)
                 .size(sizeClient.lookup(id).size())
                 .colour(colourClient.lookup(id).colour())
-                .description(descriptionResponse.lookup(id).description())
+                .description(descriptionClient.lookup(id).description())
                 .build();
     }
 }
