@@ -7,7 +7,7 @@ import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
-@ExtendWith({SpecListener.class, SequenceDiagramExtension.class})
+@ExtendWith(SequenceDiagramExtension.class)
 public class SequenceExampleTest implements WithTestState {
 
     private static final String NEW_USER_REQUEST = "{ \"name\" : \"nick\" }";

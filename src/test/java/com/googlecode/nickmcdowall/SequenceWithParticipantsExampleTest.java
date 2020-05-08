@@ -13,7 +13,7 @@ import java.util.List;
 
 import static com.googlecode.yatspec.sequence.Participants.*;
 
-@ExtendWith({SpecListener.class, SequenceDiagramExtension.class})
+@ExtendWith(SequenceDiagramExtension.class)
 public class SequenceWithParticipantsExampleTest implements WithTestState, WithParticipants {
 
     private static final String NEW_USER_REQUEST = "{ \"name\" : \"nick\" }";

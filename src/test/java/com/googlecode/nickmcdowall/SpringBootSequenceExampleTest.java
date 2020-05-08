@@ -4,7 +4,6 @@ import com.googlecode.nickmcdowall.product.ImmutableProductResponse;
 import com.googlecode.nickmcdowall.product.ProductResponse;
 import com.googlecode.nickmcdowall.stub.HttpServiceStubber;
 import com.googlecode.yatspec.junit.SequenceDiagramExtension;
-import com.googlecode.yatspec.junit.SpecListener;
 import com.googlecode.yatspec.junit.WithParticipants;
 import com.googlecode.yatspec.sequence.Participant;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
@@ -27,7 +26,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 
 @ContextConfiguration(classes = Application.class, initializers = ConfigFileApplicationContextInitializer.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
-@ExtendWith({SpecListener.class, SequenceDiagramExtension.class})
+@ExtendWith(SequenceDiagramExtension.class)
 public class SpringBootSequenceExampleTest implements WithTestState, WithParticipants {
 
     @Value("${app.host}")
