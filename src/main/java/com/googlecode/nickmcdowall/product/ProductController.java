@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("product")
+@RequestMapping("product-details")
 public class ProductController {
 
     private final ProductService productService;
@@ -14,7 +14,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping(value = "/details/{id}", produces = "application/json")
+    @GetMapping(value = "/{id}", produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public ProductResponse productDetails(@PathVariable String id) {
         return productService.getProductDetailsFor(id);

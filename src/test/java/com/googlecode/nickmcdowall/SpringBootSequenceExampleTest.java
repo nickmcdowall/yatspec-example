@@ -50,7 +50,7 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
     public void handleProductDetailsRequest() {
         givenALargeRedFrisbeeProductExistsWithId("5");
 
-        whenAnApiRequestIsReceivedFor("/product/details/5");
+        whenAnApiRequestIsReceivedFor("/product-details/5");
 
         thenApiReturns(aProductResponseWith().id("5").size("large").colour("red").description("Frisbee"));
     }
