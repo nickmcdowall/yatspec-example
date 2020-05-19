@@ -22,6 +22,19 @@ import static com.googlecode.yatspec.sequence.Participants.*;
 @Configuration
 public class TestConfig {
 
+    private static final String USER = "User";
+    private static final String APP = "App";
+    private static final String COLOUR_SERVICE = "ColourService";
+    private static final String DESCRIPTION_SERVICE = "DescriptionService";
+    private static final String SIZE_SERVICE = "SizeService";
+
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private TestRestTemplate testRestTemplate;
+
     @Bean
     public HttpServiceStubber httpServiceStubber(@Value("${wiremock.server.port}") int port) {
         return new HttpServiceStubber(port);
@@ -35,28 +48,22 @@ public class TestConfig {
     @Bean
     public List<Participant> participants() {
         return List.of(
-                ACTOR.create("User", "Customer"),
-                PARTICIPANT.create("App", "ProductService"),
-                COLLECTIONS.create("SizeService"),
-                COLLECTIONS.create("ColourService"),
-                COLLECTIONS.create("DescriptionService")
+                ACTOR.create(USER),
+                PARTICIPANT.create(APP, "ProductService"),
+                COLLECTIONS.create(SIZE_SERVICE),
+                COLLECTIONS.create(COLOUR_SERVICE),
+                COLLECTIONS.create(DESCRIPTION_SERVICE)
         );
     }
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Autowired
-    TestRestTemplate testRestTemplate;
-
     @PostConstruct
     public void configureYatspecInterceptor() {
-        addInterceptor(restTemplate, "App", Map.of(
-                "/colour", "ColourService",
-                "/size", "SizeService",
-                "/description", "DescriptionService"));
+        addInterceptor(restTemplate, APP, Map.of(
+                "/colour", COLOUR_SERVICE,
+                "/size", SIZE_SERVICE,
+                "/description", DESCRIPTION_SERVICE));
 
-        addInterceptor(testRestTemplate.getRestTemplate(), "User", Map.of("/", "App"));
+        addInterceptor(testRestTemplate.getRestTemplate(), USER, Map.of("/", APP));
     }
 
     private void addInterceptor(RestTemplate restTemplate, String sourceName, Map<String, String> targetNameMapping) {
