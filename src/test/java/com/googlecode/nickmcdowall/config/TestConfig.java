@@ -1,6 +1,6 @@
 package com.googlecode.nickmcdowall.config;
 
-import com.googlecode.nickmcdowall.interceptor.YatspecHttpInterceptor;
+import com.googlecode.nickmcdowall.interceptor.rest.RestTemplateInterceptor;
 import com.googlecode.nickmcdowall.stub.HttpServiceStubber;
 import com.googlecode.yatspec.sequence.Participant;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
@@ -69,7 +69,7 @@ public class TestConfig {
     private void addInterceptor(RestTemplate restTemplate, String sourceName, Map<String, String> targetNameMapping) {
         restTemplate.setRequestFactory(new BufferingClientHttpRequestFactory(new SimpleClientHttpRequestFactory()));
         restTemplate.setInterceptors(List.of(
-                new YatspecHttpInterceptor(interactions(), sourceName, targetNameMapping)
+                new RestTemplateInterceptor(interactions(), sourceName, targetNameMapping)
         ));
     }
 
