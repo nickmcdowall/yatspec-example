@@ -1,11 +1,9 @@
 package com.googlecode.nickmcdowall;
 
 import com.googlecode.yatspec.junit.SequenceDiagramExtension;
-import com.googlecode.yatspec.junit.SpecListener;
 import com.googlecode.yatspec.junit.WithParticipants;
 import com.googlecode.yatspec.sequence.Participant;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
@@ -14,7 +12,7 @@ import java.util.List;
 import static com.googlecode.yatspec.sequence.Participants.*;
 
 @ExtendWith(SequenceDiagramExtension.class)
-public class SequenceWithParticipantsExampleTest implements WithTestState, WithParticipants {
+public class SequenceWithParticipantsExampleTest implements WithParticipants {
 
     private static final String NEW_USER_REQUEST = "{ \"name\" : \"nick\" }";
     private static final String EXPECTED_ENRICHED_MESSAGE = "<some-xml/>";
@@ -49,11 +47,6 @@ public class SequenceWithParticipantsExampleTest implements WithTestState, WithP
 
     private void andAnEnrichedMessageIsSentToTheOutboundQueue() {
         interactions.log("send enriched message from App to outbound", EXPECTED_ENRICHED_MESSAGE);
-    }
-
-    @Override
-    public TestState testState() {
-        return interactions;
     }
 
     @Override

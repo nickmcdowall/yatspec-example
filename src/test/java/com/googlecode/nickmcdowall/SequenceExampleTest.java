@@ -1,21 +1,19 @@
 package com.googlecode.nickmcdowall;
 
 import com.googlecode.yatspec.junit.SequenceDiagramExtension;
-import com.googlecode.yatspec.junit.SpecListener;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(SequenceDiagramExtension.class)
-public class SequenceExampleTest implements WithTestState {
+public class SequenceExampleTest {
 
     private static final String NEW_USER_REQUEST = "{ \"name\" : \"nick\" }";
     private static final String EXPECTED_ENRICHED_MESSAGE = "<some-xml/>";
     private static final String LOOKUP_ID = "555";
     private static final String SERVICE_LOOKUP_RESPONSE = "{ \"555\" : \"ok\"} ";
 
-    private TestState interactions = new TestState();
+    private final TestState interactions = new TestState();
 
     @Test
     public void messageFromUpstreamToDownstream() {
@@ -45,11 +43,5 @@ public class SequenceExampleTest implements WithTestState {
     private void andAnEnrichedMessageIsSentToTheOutboundTopicContainingThe(String expectedOutputMessage) {
         interactions.log("EnrichedMessage from App to OutboundTopic", expectedOutputMessage);
     }
-
-    @Override
-    public TestState testState() {
-        return interactions;
-    }
-
 
 }

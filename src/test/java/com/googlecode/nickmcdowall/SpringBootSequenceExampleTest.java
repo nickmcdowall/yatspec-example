@@ -7,7 +7,6 @@ import com.googlecode.yatspec.junit.SequenceDiagramExtension;
 import com.googlecode.yatspec.junit.WithParticipants;
 import com.googlecode.yatspec.sequence.Participant;
 import com.googlecode.yatspec.state.givenwhenthen.TestState;
-import com.googlecode.yatspec.state.givenwhenthen.WithTestState;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +26,7 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ContextConfiguration(classes = Application.class, initializers = ConfigFileApplicationContextInitializer.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ExtendWith(SequenceDiagramExtension.class)
-public class SpringBootSequenceExampleTest implements WithTestState, WithParticipants {
+public class SpringBootSequenceExampleTest implements WithParticipants {
 
     @Value("${app.host}")
     private String appHost;
@@ -58,11 +57,6 @@ public class SpringBootSequenceExampleTest implements WithTestState, WithPartici
     @AfterEach
     public void teardown() {
         httpServiceStubber.stop();
-    }
-
-    @Override
-    public TestState testState() {
-        return interactions;
     }
 
     @Override
