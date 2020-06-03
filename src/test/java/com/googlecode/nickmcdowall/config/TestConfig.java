@@ -24,6 +24,10 @@ public class TestConfig {
         return new TestState();
     }
 
+    /**
+     * Provide additional styling information for the sequence diagram - name or alias name to display, ordering and
+     * entity type.
+     */
     @Bean
     public List<Participant> participants() {
         return List.of(
