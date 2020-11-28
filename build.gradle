@@ -15,8 +15,8 @@ ext {
 }
 
 repositories {
-//    jcenter()
-    mavenCentral()
+    jcenter()
+//    mavenCentral()
 }
 
 test {
