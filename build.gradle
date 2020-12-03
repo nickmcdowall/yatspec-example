@@ -34,7 +34,7 @@ dependencies {
     testRuntimeOnly "org.junit.platform:junit-platform-launcher:$junitPlatformVersion"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$junitJupiter"
 
-    testImplementation 'com.github.nickmcdowall:yatspec:2020.3.8'
+    testImplementation 'com.github.nickmcdowall:yatspec:2020.3.9'
     testImplementation 'com.github.nickmcdowall:yatspec-lsd-interceptors:0.3.21'
 
     testImplementation 'com.github.tomakehurst:wiremock:2.26.3'
